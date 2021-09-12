@@ -7,7 +7,7 @@ const postsRoutes = require('./routes/posts-routes');
 
 const app = express();
 
-app.use(postsRoutes);
+app.use("/api/posts", postsRoutes);
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
