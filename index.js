@@ -16,7 +16,7 @@ app.use(bodyParser.json());
   .catch(err => console.log(err));
 */
 // Passport middleware
-app.use(passport.initialize());
+//app.use(passport.initialize());
 
 // Passport Config
 //require('./config/passport')(passport);
