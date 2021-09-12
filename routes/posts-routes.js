@@ -25,4 +25,12 @@ router.get('/:pid', (req, res, next) => {
   res.json({post});
 });
 
+router.get('/users/:uid', (req, res, next) => {
+	const userPost = req.params.uid;
+	const post = DUMMY_POST.find(p => {
+		return p.author.username === userPost;
+	})
+	res.json({post})
+}) 
+
 module.exports = router;
