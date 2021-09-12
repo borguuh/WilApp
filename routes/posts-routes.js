@@ -1,49 +1,11 @@
 const express = require('express');
 
-const HttpError = require('../models/http-error');
+const postsControllers = require('../controllers/posts-controllers');
 
 const router = express.Router();
 
-const DUMMY_POST = [
-	{
-		id: 'p1',
-		title: 'my first post',
-		description: 'first post',
-		body: 'OK, this is just to test, right?',
-		createdAt: '2021-08-18T03:22:56.637Z',
-		updatedAt: '2021-08-18T03:23:56.637Z',
-		author: {
-			uid: 'u1',
-			username: "Borguuh",
-			img: 'https://i.stack.imgur.com/xHWG8.jpg'
-		}
-	}
-]
+router.get('/:pid', postsControllers.getPlaceById);
 
-router.get('/:pid', (req, res, next) => {
-  const postId = req.params.pid;
-  const post = DUMMY_POST.find(p => {
-  	return p.id === postId;
-  });
-  if (!post) {
-    throw new HttpError('Could not find a post for the provided id.', 404);
-  }
-
-  res.json({post});
-});
-
-router.get('/users/:uid', (req, res, next) => {
-	const userPost = req.params.uid;
-	const post = DUMMY_POST.find(p => {
-		return p.author.uid === userPost;
-	})
-  if (!post) {
-    return next(
-      new HttpError('Could not find a post for the provided user id.', 404)
-    );
-  }
-
-	res.json({post})
-}) 
+router.get('/users/:uid', postsControllers.getPlaceByUserId) 
 
 module.exports = router;
