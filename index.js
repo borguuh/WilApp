@@ -7,8 +7,14 @@ const postsRoutes = require('./routes/posts-routes');
 
 const app = express();
 
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+//Routes
 app.use("/api/posts", postsRoutes);
 
+//Error handling from routes --http-error.js and postcontroller
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);
@@ -17,9 +23,6 @@ app.use((error, req, res, next) => {
   res.json({message: error.message || 'An unknown error occurred!'});
 });
 
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // Connect to MongoDB
 /*mongoose

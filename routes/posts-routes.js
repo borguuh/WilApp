@@ -4,8 +4,10 @@ const postsControllers = require('../controllers/posts-controllers');
 
 const router = express.Router();
 
-router.get('/:pid', postsControllers.getPlaceById);
+router.get('/:pid', postsControllers.getPostById);
 
-router.get('/users/:uid', postsControllers.getPlaceByUserId) 
+router.get('/users/:uid', postsControllers.getPostByUserId);
+
+router.post('/', postsControllers.createPost);
 
 module.exports = router;

@@ -1,3 +1,5 @@
+const uuid = require('uuid/v4');
+
 const HttpError = require('../models/http-error');
 
 const DUMMY_POST = [
@@ -8,15 +10,12 @@ const DUMMY_POST = [
 		body: 'OK, this is just to test, right?',
 		createdAt: '2021-08-18T03:22:56.637Z',
 		updatedAt: '2021-08-18T03:23:56.637Z',
-		author: {
-			uid: 'u1',
-			username: "Borguuh",
-			img: 'https://i.stack.imgur.com/xHWG8.jpg'
-		}
+		uid: 'u1',
+		username: 'borguuh'
 	}
 ]
 
-const getPlaceById = (req, res, next) => {
+const getPostById = (req, res, next) => {
   const postId = req.params.pid;
   const post = DUMMY_POST.find(p => {
   	return p.id === postId;
@@ -28,11 +27,10 @@ const getPlaceById = (req, res, next) => {
   res.json({post});
 }
 
-
-const getPlaceByUserId =  (req, res, next) => {
+const getPostByUserId =  (req, res, next) => {
 	const userPost = req.params.uid;
 	const post = DUMMY_POST.find(p => {
-		return p.author.uid === userPost;
+		return p.uid === userPost;
 	})
   if (!post) {
     return next(
@@ -43,5 +41,25 @@ const getPlaceByUserId =  (req, res, next) => {
 	res.json({post})
 };
 
-exports.getPlaceById = getPlaceById;
-exports.getPlaceByUserId = getPlaceByUserId;
+const createPost = (req, res, next) => {
+  const { id, title, body, description, createdAt, updatedAt, uid, username } = req.body;
+  
+  const createdPost = {
+    id: uuid(),
+    title,
+    body,
+    description,
+    createdAt,
+    updatedAt,
+    uid,
+    username
+  };
+
+  DUMMY_POST.push(createdPost); //unshift(createdPost)
+
+  res.status(201).json({place: createdPost});
+};
+
+exports.getPostById = getPostById;
+exports.getPostByUserId = getPostByUserId;
+exports.createPost = createPost
