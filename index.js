@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const postsRoutes = require('./routes/posts-routes');
+const HttpError = require('./models/http-error');
 
 const app = express();
 
@@ -13,6 +14,12 @@ app.use(bodyParser.json());
 
 //Routes
 app.use("/api/posts", postsRoutes);
+
+//Not found route
+app.use((req, res, next) => {
+  const error = new HttpError('Could not find this route.', 404);
+  throw error;
+});
 
 //Error handling from routes --http-error.js and postcontroller
 app.use((error, req, res, next) => {
