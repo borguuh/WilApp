@@ -86,6 +86,9 @@ const updatePost = (req, res, next) => {
 
 const deletePost = (req, res, next) => {
   const postId = req.params.pid;
+  if (!DUMMY_POSTS.find(p => p.id === postId)) {
+    throw new HttpError('Could not find post.', 404);
+  }
   DUMMY_POSTS = DUMMY_POSTS.filter(p => p.id !== postId);
   res.status(200).json({ message: 'Deleted place.' });
 };
