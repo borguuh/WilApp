@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const postsRoutes = require('./routes/posts-routes');
+const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 
 //Routes
 app.use("/api/posts", postsRoutes);
+app.use('/api/users', usersRoutes);
 
 //Not found route
 app.use((req, res, next) => {
