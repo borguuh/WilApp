@@ -1,4 +1,5 @@
 const uuid = require('uuid/v4');
+const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 
@@ -43,7 +44,11 @@ const getPostsByUserId =  (req, res, next) => {
 
 const createPost = (req, res, next) => {
   const { id, title, body, description, createdAt, updatedAt, uid, username } = req.body;
-  
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+  }
+
   const createdPost = {
     id: uuid(),
     title,
@@ -62,6 +67,11 @@ const createPost = (req, res, next) => {
 
 const updatePost = (req, res, next) => {
   const { title, description } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+  }
+
   const postId = req.params.pid;
 
   const updatedPost = { ...DUMMY_POSTS.find(p => p.id === postId) };

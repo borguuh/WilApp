@@ -17,7 +17,10 @@ const getUsers = (req, res, next) => {
 
 const signup = (req, res, next) => {
   const { name, email, password } = req.body;
-
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError('Invalid inputs passed, please check your data.', 422);
+  }
   const hasUser = DUMMY_USERS.find(u => u.email === email);
   if (hasUser) {
     throw new HttpError('Could not create user, email already exists.', 422);

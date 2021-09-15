@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require('express-validator');
 
 const postsControllers = require('../controllers/posts-controllers');
 
@@ -8,9 +9,19 @@ router.get('/:pid', postsControllers.getPostById);
 
 router.get('/users/:uid', postsControllers.getPostsByUserId);
 
-router.post('/', postsControllers.createPost);
+router.post('/', [
+    check('title')
+      .not()
+      .isEmpty(),
+    check('description').isLength({ min: 5 })
+  ], postsControllers.createPost);
 
-router.patch('/:pid', postsControllers.updatePost);
+router.patch('/:pid', [
+    check('title')
+      .not()
+      .isEmpty(),
+    check('description').isLength({ min: 5 })
+  ], postsControllers.updatePost);
 
 router.delete('/:pid', postsControllers.deletePost);
 
