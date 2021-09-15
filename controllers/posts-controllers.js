@@ -29,7 +29,7 @@ const getPostById = (req, res, next) => {
 
 const getPostsByUserId =  (req, res, next) => {
 	const userId = req.params.uid;
-	const post = DUMMY_POSTS.filter(p => {
+	const posts = DUMMY_POSTS.filter(p => {
 		return p.uid === userId;
 	})
   if (!posts || posts.length === 0) {
