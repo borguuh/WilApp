@@ -2,7 +2,7 @@ const uuid = require('uuid/v4');
 
 const HttpError = require('../models/http-error');
 
-let DUMMY_POST = [
+let DUMMY_POSTS = [
 	{
 		id: 'p1',
 		title: 'my first post',
@@ -17,7 +17,7 @@ let DUMMY_POST = [
 
 const getPostById = (req, res, next) => {
   const postId = req.params.pid;
-  const post = DUMMY_POST.find(p => {
+  const post = DUMMY_POSTS.find(p => {
   	return p.id === postId;
   });
   if (!post) {
@@ -27,18 +27,18 @@ const getPostById = (req, res, next) => {
   res.json({post});
 }
 
-const getPostByUserId =  (req, res, next) => {
-	const userPost = req.params.uid;
-	const post = DUMMY_POST.find(p => {
-		return p.uid === userPost;
+const getPostsByUserId =  (req, res, next) => {
+	const userId = req.params.uid;
+	const post = DUMMY_POSTS.filter(p => {
+		return p.uid === userId;
 	})
-  if (!post) {
+  if (!posts || posts.length === 0) {
     return next(
-      new HttpError('Could not find a post for the provided user id.', 404)
+      new HttpError('Could not find posts for the provided user.', 404)
     );
   }
 
-	res.json({post})
+	res.json({posts})
 };
 
 const createPost = (req, res, next) => {
@@ -55,7 +55,7 @@ const createPost = (req, res, next) => {
     username
   };
 
-  DUMMY_POST.push(createdPost); //unshift(createdPost)
+  DUMMY_POSTS.push(createdPost); //unshift(createdPost)
 
   res.status(201).json({place: createdPost});
 };
@@ -64,25 +64,25 @@ const updatePost = (req, res, next) => {
   const { title, description } = req.body;
   const postId = req.params.pid;
 
-  const updatedPost = { ...DUMMY_POST.find(p => p.id === postId) };
-  const postIndex = DUMMY_POST.findIndex(p => p.id === postId);
+  const updatedPost = { ...DUMMY_POSTS.find(p => p.id === postId) };
+  const postIndex = DUMMY_POSTS.findIndex(p => p.id === postId);
   updatedPost.title = title;
   updatedPost.description = description;
 
-  DUMMY_POST[postIndex] = updatedPost;
+  DUMMY_POSTS[postIndex] = updatedPost;
 
   res.status(200).json({post: updatedPost});
 };
 
 const deletePost = (req, res, next) => {
   const postId = req.params.pid;
-  DUMMY_POST = DUMMY_POST.filter(p => p.id !== postId);
+  DUMMY_POSTS = DUMMY_POSTS.filter(p => p.id !== postId);
   res.status(200).json({ message: 'Deleted place.' });
 };
 
 
 exports.getPostById = getPostById;
-exports.getPostByUserId = getPostByUserId;
+exports.getPostsByUserId = getPostsByUserId;
 exports.createPost = createPost;
 exports.updatePost = updatePost;
 exports.deletePost = deletePost;
