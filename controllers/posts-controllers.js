@@ -2,7 +2,7 @@ const uuid = require('uuid/v4');
 
 const HttpError = require('../models/http-error');
 
-const DUMMY_POST = [
+let DUMMY_POST = [
 	{
 		id: 'p1',
 		title: 'my first post',
@@ -74,7 +74,11 @@ const updatePost = (req, res, next) => {
   res.status(200).json({post: updatedPost});
 };
 
-const deletePost = (req, res, next) => {};
+const deletePost = (req, res, next) => {
+  const postId = req.params.pid;
+  DUMMY_POST = DUMMY_POST.filter(p => p.id !== postId);
+  res.status(200).json({ message: 'Deleted place.' });
+};
 
 
 exports.getPostById = getPostById;
