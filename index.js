@@ -34,11 +34,14 @@ app.use((error, req, res, next) => {
 
 
 // Connect to MongoDB
-/*mongoose
-  .connect(db)
+mongoose
+  .connect("mongodb://localhost:27017/willapp", {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+})
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
-*/
+
 // Passport middleware
 //app.use(passport.initialize());
 
